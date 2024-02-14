@@ -6,7 +6,7 @@ import VisitWebsite from '../screens/home/VisitWebsite';
 import BottomTabNavigator from './BottomTabNavigator';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomDrawer from '../components/CustomDrawer';
-import Attendance from '../screens/home/AddStudent';
+import Attendance from '../screens/home/Quiz';
 //import About from '../screens/home/About';
 
 const Drawer = createDrawerNavigator();
