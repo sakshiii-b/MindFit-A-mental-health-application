@@ -9,8 +9,8 @@ import Blogs from '../screens/home/Blogs';
 // import Activites from '../screens/home/Acticites';
 import Video from '../screens/home/Video';
 // import Task from '../screens/home/Task';
-import TestResult from '../screens/home/TestResult';
-// import Student_Details from '../screens/home/Student_Details';
+import TestHistory from '../screens/home/TestHistory';
+import ResultScreen from '../screens/home/ResultScreen';
 import Profile  from '../screens/home/Profile';
 // import Add  from '../screens/home/Add';
 // import AddTask  from '../screens/home/AddTask';
@@ -32,10 +32,10 @@ function HomeNavigator() {
       {/* <Stack.Screen name={ROUTES.ACTIVITES} component={Activites} /> */}
       <Stack.Screen name={ROUTES.Video} component={Video} />
       {/* <Stack.Screen name={ROUTES.TASK} component={Task} /> */}
-      <Stack.Screen name={ROUTES.TestResult} component={TestResult} />
+      <Stack.Screen name={ROUTES.TestHistory} component={TestHistory} />
       {/* <Stack.Screen name={ROUTES.ADD} component={Add} /> */}
       <Stack.Screen name={ROUTES.PROFILE} component={Profile} />
-      {/* <Stack.Screen name={ROUTES.Student_Details} component={Student_Details} /> */}
+      <Stack.Screen name={ROUTES.ResultScreen} component={ResultScreen} /> 
       {/* <Stack.Screen name={ROUTES.ADDTASK} component={AddTask} /> */}
       {/* <Stack.Screen name={ROUTES.ViewAttendance} component={ViewAttendance} /> */}
     </Stack.Navigator>

@@ -13,20 +13,20 @@ import {
 import {COLORS, ROUTES} from '../../constants';
 const VisitWebsite = () => {
   const handleVisitWebsite = () => {
-    Linking.openURL('https://demo.vmmhs.org/gallery');
+    Linking.openURL('https://youtu.be/iwbCmKqwO1U?si=3YTa94C3jO5hICgj');
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={require('../../assets/logovmm.png')} style={styles.logo} />
+        <Image source={require('../../assets/logo.png')} style={styles.logo} />
       </View>
       <View style={styles.contentContainer}>
         
         <TouchableOpacity
           style={styles.visitWebsiteButton}
           onPress={handleVisitWebsite}>
-          <Text style={styles.visitWebsiteButtonText}>Visit Gallery</Text>
+          <Text style={styles.visitWebsiteButtonText}>Visit Mental Health Playlist</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -36,7 +36,7 @@ const VisitWebsite = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.bgColor,
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 300,
+    height: 300,
     resizeMode: 'contain',
   },
   contentContainer: {

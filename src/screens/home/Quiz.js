@@ -1,122 +1,98 @@
 /* eslint-disable prettier/prettier */
-//ADD Student
-
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet,
+  View,
   Image,
-  Text,
   SafeAreaView,
   TouchableOpacity,
+  Text,
+  Button,
+  StyleSheet,
   ScrollView,
-  View,
 } from 'react-native';
+import ResultScreen from './ResultScreen';
 import LinearGradient from 'react-native-linear-gradient';
 
-
-const Activities = ({ navigation }) => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
+const App = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleOptionSelect = (optionIndex) => {
-    const updatedOptions = [...selectedOptions];
-    updatedOptions[currentQuestionIndex] = optionIndex;
-    setSelectedOptions(updatedOptions);
-  };
-
-  const handleContinue = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
-
-  const handleSubmit = async () => {
-    try {
-      const apiEndpoint = 'YOUR_API_ENDPOINT'; // Replace with your actual API endpoint
-      const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ selectedOptions }),
-      });
-
-      console.log('API Response:', response);
-      setSubmitted(true);
-    } catch (error) {
-      console.error('Error submitting quiz:', error);
-    }
-  };
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [submissionResult, setSubmissionResult] = useState(null);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const apiEndpoint = 'http://192.168.173.244:5000/fetch_questions';
-        const response = await fetch(apiEndpoint);
+        const response = await fetch('http://192.168.173.244:5000/fetch_questions');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
-
+        const initialSelectedOptions = data.questions.reduce((acc, question, index) => {
+          acc[index] = null;
+          return acc;
+        }, {});
+        setSelectedOptions(initialSelectedOptions);
         setQuestions(data.questions);
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
     };
-
     fetchQuestions();
   }, []);
 
-  const renderOptions = (options, questionIndex) => {
-    return options.map((option, index) => (
-      <TouchableOpacity
-        key={index}
-        style={[
-          styles.optionContainer,
-          selectedOptions[questionIndex] === index && styles.selectedOption,
-        ]}
-        onPress={() => handleOptionSelect(index)}
-        disabled={submitted}
-      >
-        <Text style={styles.optionText}>{option}</Text>
-      </TouchableOpacity>
-    ));
+  const handleOptionSelect = (option) => {
+    const updatedSelectedOptions = { ...selectedOptions };
+    updatedSelectedOptions[currentQuestionIndex] = option;
+    setSelectedOptions(updatedSelectedOptions);
   };
 
-  const renderQuestion = () => {
-    const currentQuestion = questions[currentQuestionIndex];
-    return (
-      <View key={currentQuestionIndex} style={styles.questionContainer}>
-        <View style={styles.questionTitleContainer}>
-          <Text style={styles.questionText}>{`Question ${currentQuestionIndex + 1}: ${currentQuestion.question}`}</Text>
-        </View>
-        <View style={styles.optionsContainer}>
-          {renderOptions(currentQuestion.options, currentQuestionIndex)}
-        </View>
-        {currentQuestionIndex === questions.length - 1 ? (
-          
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={handleSubmit}
-            disabled={submitted}
-          >
-            <Text style={styles.submitButtonText}>Submit</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={styles.continueButton}
-            onPress={handleContinue}
-            disabled={submitted}
-          >
-            <Text style={styles.continueButtonText}>Continue</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
+  const handleContinue = () => {
+    if (!selectedOptions[currentQuestionIndex]) {
+      alert('Please select an option to continue.');
+      return;
+    }
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
+  const handleSubmission = async () => {
+    try {
+      const selectedOptionsArray = Object.values(selectedOptions)
+        .filter((option) => option !== null && option !== undefined)
+        .map((option) => [option]);
+
+      const response = await fetch('http://192.168.173.244:5000/evaluate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedOptionsArray),
+      });
+
+      const result = await response.json();
+      setSubmissionResult(result.result);
+    } catch (error) {
+      console.error('Error submitting options:', error);
+    }
+  };
+
+  const handleReset = () => {
+    // Implement your reset logic here
+  };
+
+  if (submissionResult !== null) {
+    return <ResultScreen submissionResult={submissionResult} />;
+  }
+
+  if (questions.length === 0) {
+    return <Text style={styles.loading}>Loading...</Text>;
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
   return (
     <LinearGradient
-      colors={['#6441A5', '#2a0845']} // Example gradient colors
+      colors={['#6441A5', '#2a0845']}
       style={styles.gradientContainer}
     >
       <SafeAreaView style={styles.container}>
@@ -128,11 +104,46 @@ const Activities = ({ navigation }) => {
             />
             <Text style={styles.title}>Quiz Screen</Text>
           </View>
-          <View style={styles.centeredContent}>{questions.length > 0 && renderQuestion()}</View>
+          <View style={styles.centeredContent}>
+            <View style={styles.questionContainer}>
+              <Text style={styles.questionText}>{`Question ${currentQuestionIndex + 1}: ${currentQuestion.question}`}</Text>
+              {currentQuestion.options
+                .filter((option) => option !== null && option.trim() !== '')
+                .map((option, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleOptionSelect(option)}
+                    style={[
+                      styles.optionContainer,
+                      {
+                        backgroundColor:
+                          selectedOptions[currentQuestionIndex] === option
+                            ? 'lightblue'
+                            : 'rgba(244, 244, 244, 0.1)',
+                      },
+                    ]}
+                    disabled={
+                      selectedOptions[currentQuestionIndex] &&
+                      selectedOptions[currentQuestionIndex] !== option
+                    }
+                  >
+                    <Text style={styles.optionText}>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+            </View>
+            {currentQuestionIndex < questions.length - 1 ? (
+              <TouchableOpacity onPress={handleContinue} style={styles.continueButton}>
+                <Text style={styles.continueButtonText}>Continue</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={handleSubmission} style={styles.submitButton}>
+                <Text style={styles.submitButtonText}>Submit</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient >
-
+    </LinearGradient>
   );
 };
 
@@ -143,10 +154,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-  },
-  scrollViewContent: {
-    flexGrow: 1,
-    justifyContent: 'space-between',
   },
   header: {
     flexDirection: 'row',
@@ -164,49 +171,40 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: 'black',
   },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centeredContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   questionContainer: {
     marginBottom: 30,
     padding: 10,
     width: '100%',
     backgroundColor: 'rgba(244, 244, 244, 0.1)',
-    // borderRadius: 10,
     alignItems: 'center',
   },
   questionText: {
     fontSize: 18,
     marginBottom: 8,
     color: 'white',
-
-  },
-  questionTitleContainer: {
-    marginBottom: 20,
-    alignSelf: 'flex-start',
   },
   optionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
     padding: 8,
-    // borderRadius: 1,
     borderWidth: 0.8,
     width: '100%',
     borderColor: '#E0E0E0',
-  },
-  optionsContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
-  selectedOption: {
-    backgroundColor: 'lightblue',
-  },
-  optionText: {
-    marginLeft: 8,
-    fontSize: 16,
-    textAlign: 'center',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    color: 'white',
   },
   submitButton: {
     backgroundColor: 'blue',
@@ -220,6 +218,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  optionsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  selectedOption: {
+    backgroundColor: 'lightblue',
+  },
+  optionText: {
+    marginLeft: 8,
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'white',
+  },
   continueButton: {
     backgroundColor: 'lightblue',
     padding: 16,
@@ -232,11 +244,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  centeredContent: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
 
-export default Activities;
+export default App;

@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
   const handleLogin = async () => {
     if (email !== '' && password !== '') {
       try {
-        const response = await fetch('http://192.168.173.244:5000/login', {
+        const response = await fetch('http://192.168.123.244:5000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
