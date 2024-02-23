@@ -24,7 +24,7 @@ const App = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch('http://192.168.173.244:5000/fetch_questions');
+        const response = await fetch('http://192.168.245.244:5000/fetch_questions');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -62,7 +62,7 @@ const App = () => {
         .filter((option) => option !== null && option !== undefined)
         .map((option) => [option]);
 
-      const response = await fetch('http://192.168.173.244:5000/evaluate', {
+      const response = await fetch('http://192.168.245.244:5000/evaluate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

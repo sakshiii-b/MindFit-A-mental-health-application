@@ -1,4 +1,4 @@
-package com.vmmteacher;
+package com.mindfit;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -13,7 +13,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "VMMTeacher";
+    return "MindFit";
   }
   @Override
   protected void onCreate(Bundle savedInstanceState) {

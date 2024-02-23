@@ -94,6 +94,30 @@ const data = [
     link: 'https://www.betterup.com/blog/mental-health-awareness',
     thumbnail: require('../../assets/thumbnail2.png'),
   },
+  {
+    id: '3',
+    title: 'Mental Health in young people',
+    link: 'https://www.nature.com/articles/d41586-021-02690-5',
+    thumbnail: require('../../assets/thumbnail5.jpg'),
+  },
+  {
+    id: '4',
+    title: 'Building Better Mental Health',
+    link: 'https://www.helpguide.org/articles/mental-health/building-better-mental-health.htm',
+    thumbnail: require('../../assets/thumbnail6.jpg'),
+  },
+  {
+    id: '5',
+    title: 'Taking Care of your Mental Health',
+    link: 'https://www.betterup.com/blog/how-to-take-care-of-mental-health',
+    thumbnail: require('../../assets/thumbnail7.jpg'),
+  },
+  {
+    id: '6',
+    title: 'Improving Mental Wellbeing',
+    link: 'https://www.mind.org.uk/information-support/tips-for-everyday-living/wellbeing/',
+    thumbnail: require('../../assets/thumbnail8.jpg'),
+  },
   // Add more articles as needed
 ];
 

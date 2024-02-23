@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,14 +10,38 @@ import {
   View,
   ImageBackground,
   Dimensions,
+  // AsyncStorage,
 } from 'react-native';
+
 import { COLORS, ROUTES } from '../../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width / 2 - 60;
 const ITEM_HEIGHT = width / 2 - 60;
 
-const Home = ({ navigation }) => {
+const Home = () => {
+  const navigation = useNavigation();
+  const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+  const fetchUserEmail = async () => {
+    try {
+      const email = await AsyncStorage.getItem('email');
+      if (email !== null) {
+        setUserEmail(email);
+        console.log(email);
+      }
+    } catch (error) {
+      console.error('Error fetching user email:', error);
+    }
+  };
+
+  fetchUserEmail();
+}, []);
+
+  
   const data = [
     {
       id: 1,
@@ -27,8 +51,8 @@ const Home = ({ navigation }) => {
     },
     {
       id: 2,
-      title: 'Test Results',
-      route: ROUTES.TestResult,
+      title: 'Test History',
+      route: ROUTES.TestHistory,
       image: require('../../assets/history.png'),
     },
     {

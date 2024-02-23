@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
   const handleLogin = async () => {
     if (email !== '' && password !== '') {
       try {
-        const response = await fetch('http://192.168.123.244:5000/login', {
+        const response = await fetch('http://192.168.245.244:5000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -94,9 +94,9 @@ const Login = ({ navigation }) => {
       <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
         <Text style={styles.forgot}>Forgot Password?</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity style={styles.loginBtn} onPress={() => navigation.navigate('Register')}>
         <Text style={styles.loginText}>Register/signup</Text>

@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.vmmteacher"
+    namespace "com.mindfit"
     defaultConfig {
-        applicationId "com.vmmteacher"
+        applicationId "com.mindfit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

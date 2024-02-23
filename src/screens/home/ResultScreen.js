@@ -1,8 +1,30 @@
 /* eslint-disable prettier/prettier */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Linking } from 'react-native';
+import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 const ResultScreen = ({ submissionResult }) => {
+
+  const saveTestHistory = async (result, message,date) => {
+
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
+
+
+
+    try {
+      let testHistory = await AsyncStorage.getItem('testHistory');
+      testHistory = testHistory ? JSON.parse(testHistory) : [];
+      const id = testHistory.length + 1; // Increment id for new entry
+      testHistory.push({ id, result, date: formattedDate, time: formattedTime, message });
+      await AsyncStorage.setItem('testHistory', JSON.stringify(testHistory));
+      console.log(testHistory)
+    } catch (error) {
+      console.error('Error saving test history:', error);
+    }
+  };
+
+
   const ranges = {
     Good: [0.00, 1.00],
     Moderate: [1.01, 1.53],
@@ -11,6 +33,7 @@ const ResultScreen = ({ submissionResult }) => {
 
   const determineRange = (result) => {
     const numericResult = parseFloat(result);
+    //console.log(numericResult)
 
     for (const range in ranges) {
       const [min, max] = ranges[range];
@@ -21,22 +44,34 @@ const ResultScreen = ({ submissionResult }) => {
     return { range: 'Unknown', color: '#ccc' };
   };
 
+  //console.log(getMessage);
+  //console.log(ranges);
+  //console.log(specificMessage)
+
+
+  React.useEffect(() => {
+    const currentDate = new Date().toISOString();  
+    saveTestHistory(submissionResult, specificMessage, currentDate, getMessage, ranges);
+  }, [submissionResult, specificMessage]);
+  
   const getColorForRange = (range) => {
     switch (range.toLowerCase()) {
       case 'good':
         return 'green';
       case 'moderate':
-        return '#ffa500'; // Light Orange
+        return '#ffa500';
       case 'severe':
         return 'red';
       default:
-        return '#ccc'; // Grey for Unknown
+        return '#ccc'; 
     }
   };
 
   const result = determineRange(submissionResult);
+  //console.log(result)
   const resultRange = result.range;
   const rangeColor = result.color;
+  //console.log(resultRange)
 
   const getMessage = (range) => {
     switch (range.toLowerCase()) {
@@ -51,13 +86,16 @@ const ResultScreen = ({ submissionResult }) => {
     }
   };
 
+  
+
   //const thankYouMessage = 'Thank you for taking the test.';
   const specificMessage = getMessage(resultRange);
+
 
   const handleSearch = () => {
     const searchQuery = 'therapist near me';
     const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
-  
+
     Linking.openURL(searchUrl).catch((err) => console.error('Error opening URL: ', err));
   };
 
@@ -65,14 +103,13 @@ const ResultScreen = ({ submissionResult }) => {
     <View style={styles.resultContainer}>
       <View style={styles.header}>
         <Image
-          source={require('../../assets/logo.png')} // Update with your actual image path
+          source={require('../../assets/logo.png')} 
           style={styles.logo}
         />
         <Text style={styles.title}>Result Screen</Text>
       </View>
       <View style={styles.centeredContent}>
         <View style={styles.result}>
-          {/* <Text style={styles.thankYouMessage}>{thankYouMessage}</Text> */}
           <Text style={{ fontSize: 36, fontWeight: 'bold', color: 'black' }}>
               Your result falls into{' '}
           <Text style={{ color: rangeColor }}>{resultRange}</Text> range.
