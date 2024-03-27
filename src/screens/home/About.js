@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // import React from 'react';
 // import {StyleSheet, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 // import {COLORS, ROUTES} from '../../constants';

@@ -11,7 +11,7 @@ const Notifications = () => {
         alignItems: 'center',
         backgroundColor: COLORS.bgColor,
       }}>
-      <Text>Notification!</Text>
+      <Text style={{ color: 'black' }}>Notifications!</Text>
     </View>
   );
 };

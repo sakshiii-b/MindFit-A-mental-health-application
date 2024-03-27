@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export default  {
   SPLASH: 'Splash',
   LOGIN: 'Login',
@@ -27,15 +28,15 @@ export default  {
   SETTINGS_DETAIL: 'Settings Detail',
   PROFILE: 'My Profile',
 
-  AddStudent:'AddStudent',
-  Gallery:'Gallery',
-  Attendance:'Attendance',
-  HomeWork:'HomeWork',
-  ACTIVITES:'Activites',
+  Quiz:'Quiz',
+  Video:'Video',
+  TestHistory:'TestHistory',
+  Blogs:'Blogs',
+  // ACTIVITES:'Activites',
   // TASK:'Task',
-  Student_Details:'Student_Details',
-  PROFILE:'Profile',
-  ADD:'Add',
-  ADDTASK:'AddTask',
+  ResultScreen:'ResultScreen',
+  //PROFILE:'Profile',
+  // ADD:'Add',
+  // ADDTASK:'AddTask',
   // ViewAttendance:'ViewAttendance',
 };

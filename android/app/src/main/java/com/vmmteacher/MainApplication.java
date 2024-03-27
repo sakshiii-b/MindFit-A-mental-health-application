@@ -1,4 +1,4 @@
-package com.vmmteacher;
+package com.mindfit;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

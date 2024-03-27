@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 
 import React from 'react';
 import {
@@ -11,13 +12,13 @@ import {
 import {COLORS, ROUTES} from '../../constants';
 const VisitWebsite = () => {
   const handleVisitWebsite = () => {
-    Linking.openURL('https://demo.vmmhs.org/');
+    Linking.openURL('https://four-steaks-beam.loca.lt');
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={require('../../assets/logovmm.png')} style={styles.logo} />
+        <Image source={require('../../assets/logo.png')} style={styles.logo} />
       </View>
       <View style={styles.contentContainer}>
         

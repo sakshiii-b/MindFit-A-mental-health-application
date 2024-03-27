@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 //SEND NOTIFICATION
 
 // import React, { useState } from 'react';

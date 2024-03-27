@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {COLORS, ROUTES} from '../constants';
@@ -6,7 +7,7 @@ import VisitWebsite from '../screens/home/VisitWebsite';
 import BottomTabNavigator from './BottomTabNavigator';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomDrawer from '../components/CustomDrawer';
-import Attendance from '../screens/home/AddStudent';
+import Attendance from '../screens/home/Quiz';
 //import About from '../screens/home/About';
 
 const Drawer = createDrawerNavigator();
@@ -34,7 +35,7 @@ function DrawerNavigator() {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={ROUTES.PROFILE}
         component={Profile}
         options={{
@@ -44,7 +45,7 @@ function DrawerNavigator() {
             <Icon name="person-outline" size={18} color={color} />
           ),
         }}
-      />
+      /> */}
       {/* <Drawer.Screen
         name={ROUTES.ABOUT}
         component={About}
